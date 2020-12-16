@@ -9,9 +9,14 @@ using Android.Widget;
 
 namespace TipCalculator
 {
+
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        EditText inputBill;
+        Button calculateButton;
+        TextView outputTip;
+        TextView outputTotal;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -20,8 +25,31 @@ namespace TipCalculator
 
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
+            inputBill = FindViewById<EditText>(Resource.Id.inputBill);
+            calculateButton = FindViewById<Button>(Resource.Id.calculateButton);
+            outputTip = FindViewById<TextView>(Resource.Id.outputTip);
+            outputTotal = FindViewById<TextView>(Resource.Id.outputTotal);
 
-            
+            calculateButton.Click += CalculateButton_Click;
+
+
+        }
+
+        void CalculateButton_Click(object sender, EventArgs e)
+        {
+            string input = inputBill.Text;
+            double bill = 0;
+
+            if(Double.TryParse(input, out bill))
+            {
+                var tip = bill * 0.15;
+                var total = bill + tip;
+
+                outputTip.Text = tip.ToString();
+                outputTotal.Text = total.ToString();
+
+            }
+
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
